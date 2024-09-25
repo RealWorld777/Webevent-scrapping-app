@@ -4,8 +4,9 @@ import EventModel from '../../model/eventModel';
 import { connectDB } from '../../../lib/mongodb';
 
 export async function GET() {
-    const filePath = path.join(process.cwd(), 'data', 'luma_events.json');
     await connectDB();
+
+    const filePath = path.join(process.cwd(), 'script', 'luma_events.json');
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const data = JSON.parse(fileContent);
 

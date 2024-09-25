@@ -15,7 +15,17 @@ export async function GET(req) {
         },
         {
             $group: {
-                _id: { $arrayElemAt: ["$featured_infos.name", 0] },
+                _id: {
+                    $arrayElemAt: [{
+                            $filter: {
+                                input: "$featured_infos",
+                                as: "info",
+                                cond: { $eq: ["$$info.type", "discover"] }
+                            }
+                        },
+                        0
+                    ]
+                },
                 count: { $sum: 1 },
                 avatar: { $first: { $arrayElemAt: ["$featured_infos.avatar_url", 0] } },
                 tint_color: { $first: "$calendar.tint_color" }
@@ -23,13 +33,13 @@ export async function GET(req) {
         },
         {
             $match: {
-                _id: { $ne: null }
+                "_id.name": { $ne: null } // Filter out documents where name is null or empty
             }
         },
         {
             $project: {
                 _id: 0,
-                city: "$_id",
+                city: "$_id.name", // Get the name of the city
                 count: 1,
                 avatar: 1,
                 tint_color: 1
@@ -52,7 +62,6 @@ export async function GET(req) {
         events[region] = results[index];
     });
 
-    console.log(events);
     return new Response(JSON.stringify(events), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
