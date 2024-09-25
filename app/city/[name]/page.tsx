@@ -41,7 +41,7 @@ export default function CityPage() {
         try {
             const response = await fetch(`/api/event/${event._id}`);
             const data = await response.json();
-            console.log("here is hadle click", data[0]);
+            console.log("here is handle click", data[0]);
             setSelectedEvent(data[0]);  // Assuming the API returns an array with one event
         } catch (error) {
             console.error('Error fetching event data:', error);
@@ -60,8 +60,8 @@ export default function CityPage() {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <AppBar position="fixed">
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: '#2a2a2a', color: 'white' }}>
+            <AppBar position="fixed" sx={{ bgcolor: '#1a1a1a' }}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Events in {name}
@@ -83,14 +83,16 @@ export default function CityPage() {
                                         display: 'flex',
                                         flexDirection: 'column',
                                         transition: 'transform 0.3s, box-shadow 0.3s',
-                                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                                        boxShadow: '0 4px 8px rgba(255,255,255,0.1)',
+                                        bgcolor: '#3a3a3a',
+                                        color: 'white',
                                         '&:hover': {
                                             transform: 'scale(1.05)',
-                                            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                                            boxShadow: '0 8px 24px rgba(255,255,255,0.15)',
                                         }
                                     }}
                                 >
-                                    <Typography variant="body2" sx={{ position: 'absolute', top: 8, right: 8, backgroundColor: 'rgba(255,255,255,0.7)', padding: '2px 6px', borderRadius: 4 }}>
+                                    <Typography variant="body2" sx={{ position: 'absolute', top: 8, right: 8, backgroundColor: 'rgba(0,0,0,0.7)', color: 'white', padding: '2px 6px', borderRadius: 4 }}>
                                         {event.event?.type || 'Unknown'} ({event.event?.time || 'N/A'})
                                     </Typography>
                                     <CardActionArea onClick={() => handleCardClick(event)}>
@@ -98,7 +100,7 @@ export default function CityPage() {
                                             {event.event?.cover_url ? (
                                                 <img src={event.event.cover_url} alt="Event Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                             ) : (
-                                                <Box sx={{ height: '100%', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                <Box sx={{ height: '100%', backgroundColor: '#4a4a4a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                     <Typography variant="body2">No image available</Typography>
                                                 </Box>
                                             )}
@@ -135,7 +137,7 @@ export default function CityPage() {
                         ))}
                     </Grid>
                 ) : (
-                    <p>Loading city data...</p>
+                    <Typography>Loading city data...</Typography>
                 )}
             </Container>
             <Modal
@@ -151,7 +153,8 @@ export default function CityPage() {
                     transform: 'translate(-50%, -50%)',
                     width: '70%',
                     maxHeight: '90vh',
-                    bgcolor: 'background.paper',
+                    bgcolor: '#3a3a3a',
+                    color: 'white',
                     border: '2px solid #000',
                     boxShadow: 24,
                     p: 4,
@@ -175,14 +178,13 @@ export default function CityPage() {
                                     <Typography><strong>Date:</strong> {selectedEvent.event?.start_at && selectedEvent.event?.end_at ? formatDateRange(selectedEvent.event.start_at, selectedEvent.event.end_at) : 'Not specified'}</Typography>
                                     <Typography><strong>Price:</strong> {selectedEvent.event?.price || 'Not specified'}</Typography>
                                     <Typography><strong>Timezone:</strong> {selectedEvent.event?.timezone || 'Not specified'}</Typography>
-                                    <Typography><strong>Country:</strong> {selectedEvent.calendar?.country || 'Unknown'}</Typography>
                                     <Typography><strong>Sold Out:</strong> {selectedEvent.sold_out !== undefined ? (selectedEvent.sold_out ? 'Yes' : 'No') : 'Unknown'}</Typography>
                                     <Typography><strong>Featured Info Count:</strong> {selectedEvent.featured_info_count !== undefined ? selectedEvent.featured_info_count.toString() : 'N/A'}</Typography>
                                     {selectedEvent.calendar?.website && (
-                                        <Typography><strong>Website:</strong> <a href={selectedEvent.calendar.website} target="_blank" rel="noopener noreferrer">{selectedEvent.calendar.website}</a></Typography>
+                                        <Typography><strong>Website:</strong> <a href={selectedEvent.calendar.website} target="_blank" rel="noopener noreferrer" style={{ color: '#90caf9' }}>{selectedEvent.calendar.website}</a></Typography>
                                     )}
                                     {selectedEvent.api_url && (
-                                        <Typography><strong>API URL:</strong> <a href={selectedEvent.api_url} target="_blank" rel="noopener noreferrer">{selectedEvent.api_url}</a></Typography>
+                                        <Typography><strong>API URL:</strong> <a href={selectedEvent.api_url} target="_blank" rel="noopener noreferrer" style={{ color: '#90caf9' }}>{selectedEvent.api_url}</a></Typography>
                                     )}
                                     {selectedEvent.calendar?.country && (
                                         <Button 
